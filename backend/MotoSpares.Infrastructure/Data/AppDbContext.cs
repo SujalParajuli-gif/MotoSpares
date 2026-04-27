@@ -12,6 +12,9 @@ public class AppDbContext : DbContext
     public DbSet<Staff> Staff => Set<Staff>();
     public DbSet<Vendor> Vendors => Set<Vendor>();
 
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Vehicle> Vehicles => Set<Vehicle>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -86,6 +89,52 @@ public class AppDbContext : DbContext
 
             entity.Property(v => v.CreatedAt)
                   .IsRequired();
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.Property(c => c.FullName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(c => c.Phone)
+                  .HasMaxLength(20);
+
+            entity.Property(c => c.Email)
+                  .HasMaxLength(100);
+
+            entity.Property(c => c.Address)
+                  .HasMaxLength(200);
+
+            entity.Property(c => c.CreatedAt)
+                  .IsRequired();
+        });
+
+        modelBuilder.Entity<Vehicle>(entity =>
+        {
+            entity.HasKey(v => v.Id);
+
+            entity.Property(v => v.VehicleNumber)
+                  .IsRequired()
+                  .HasMaxLength(50);
+
+            entity.Property(v => v.Brand)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Model)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Year)
+                  .IsRequired();
+
+            entity.HasOne(v => v.Customer)
+                  .WithMany(c => c.Vehicles)
+                  .HasForeignKey(v => v.CustomerId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         var adminId = Guid.Parse("11111111-1111-1111-1111-111111111111");
