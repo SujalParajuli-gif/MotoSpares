@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="backend/MotoSpares/MotoSpares.csproj" />
+  <Project Path="MotoSpares.Application/MotoSpares.Application.csproj" />
+  <Project Path="MotoSpares.Domain/MotoSpares.Domain.csproj" />
+  <Project Path="MotoSpares.Infrastructure/MotoSpares.Infrastructure.csproj" />
+  <Project Path="MotoSpares/MotoSpares.csproj" />
 </Solution>
