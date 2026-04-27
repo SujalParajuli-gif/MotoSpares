@@ -1,4 +1,10 @@
+using MotoSpares.Application.Interfaces.Repositories;
+using MotoSpares.Application.Services;
 using MotoSpares.Infrastructure;
+using MotoSpares.Infrastructure.Repositories;
+using MotoSpares.Application.Interfaces.Repositories;
+using MotoSpares.Application.Services;
+using MotoSpares.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +18,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add StaffService
 builder.Services.AddScoped<MotoSpares.Application.Services.StaffService>();
+builder.Services.AddScoped<IVendorRepository, VendorRepository>();
+builder.Services.AddScoped<VendorService>();
 
 var app = builder.Build();
 

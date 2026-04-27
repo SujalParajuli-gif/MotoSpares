@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Staff> Staff => Set<Staff>();
+    public DbSet<Vendor> Vendors => Set<Vendor>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,26 +21,71 @@ public class AppDbContext : DbContext
             entity.HasKey(u => u.Id);
             entity.HasIndex(u => u.Email).IsUnique();
 
-            entity.Property(u => u.FullName).IsRequired().HasMaxLength(100);
-            entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
-            entity.Property(u => u.PasswordHash).IsRequired();
-            entity.Property(u => u.Phone).HasMaxLength(20);
-            entity.Property(u => u.Role).HasConversion<string>();
-            entity.Property(u => u.CreatedAt).IsRequired();
+            entity.Property(u => u.FullName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(u => u.Email)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(u => u.PasswordHash)
+                  .IsRequired();
+
+            entity.Property(u => u.Phone)
+                  .HasMaxLength(20);
+
+            entity.Property(u => u.Role)
+                  .HasConversion<string>();
+
+            entity.Property(u => u.CreatedAt)
+                  .IsRequired();
         });
 
         modelBuilder.Entity<Staff>(entity =>
         {
             entity.HasKey(s => s.Id);
 
-            entity.Property(s => s.EmployeeCode).IsRequired().HasMaxLength(50);
-            entity.Property(s => s.Department).IsRequired().HasMaxLength(100);
-            entity.Property(s => s.JoinedAt).IsRequired();
+            entity.Property(s => s.EmployeeCode)
+                  .IsRequired()
+                  .HasMaxLength(50);
+
+            entity.Property(s => s.Department)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(s => s.JoinedAt)
+                  .IsRequired();
 
             entity.HasOne(s => s.User)
                   .WithOne()
                   .HasForeignKey<Staff>(s => s.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Vendor>(entity =>
+        {
+            entity.HasKey(v => v.Id);
+
+            entity.Property(v => v.VendorName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.ContactPerson)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Phone)
+                  .HasMaxLength(20);
+
+            entity.Property(v => v.Email)
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Address)
+                  .HasMaxLength(200);
+
+            entity.Property(v => v.CreatedAt)
+                  .IsRequired();
         });
 
         var adminId = Guid.Parse("11111111-1111-1111-1111-111111111111");
