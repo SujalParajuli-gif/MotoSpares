@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MotoSpares.Application\MotoSpares.Application.csproj" />
+    <ProjectReference Include="..\MotoSpares.Domain\MotoSpares.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -11,11 +12,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <PropertyGroup>

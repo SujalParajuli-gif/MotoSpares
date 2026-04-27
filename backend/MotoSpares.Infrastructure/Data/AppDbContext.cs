@@ -1,40 +1,56 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using MotoSpares.Domain.Entities;
-
-csharpusing Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MotoSpares.Domain.Entities;
 
 namespace MotoSpares.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>(options)
+public class AppDbContext : DbContext
 {
-    public DbSet<Customer> Customers => Set<Customer>();
-    public DbSet<Vehicle> Vehicles => Set<Vehicle>();
-    public DbSet<Part> Parts => Set<Part>();
-    public DbSet<SalesInvoice> SalesInvoices => Set<SalesInvoice>();
-    public DbSet<SalesInvoiceItem> SalesInvoiceItems => Set<SalesInvoiceItem>();
-    public DbSet<PurchaseInvoice> PurchaseInvoices => Set<PurchaseInvoice>();
-    public DbSet<Vendor> Vendors => Set<Vendor>();
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-        SeedRoles(builder);
-    }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Staff> Staff { get; set; }
 
-    private static void SeedRoles(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var roles = new List<IdentityRole<Guid>>
+        base.OnModelCreating(modelBuilder);
+
+        // User configuration
+        modelBuilder.Entity<User>(entity =>
         {
-            new() { Id = Guid.Parse("a18be9c0-aa65-4af8-bd17-00bd9344e575"), Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = "1" },
-            new() { Id = Guid.Parse("fbd4c411-4a98-4a46-84a4-4e6f2924e000"), Name = "Staff", NormalizedName = "STAFF", ConcurrencyStamp = "2" },
-            new() { Id = Guid.Parse("c3aa5a4d-8d7e-4f4a-9f3d-1d6c8d3e0000"), Name = "Customer", NormalizedName = "CUSTOMER", ConcurrencyStamp = "3" }
-        };
-        builder.Entity<IdentityRole<Guid>>().HasData(roles);
+            entity.HasKey(u => u.Id);
+            entity.HasIndex(u => u.Email).IsUnique();
+            entity.Property(u => u.FullName).IsRequired().HasMaxLength(100);
+            entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
+            entity.Property(u => u.PasswordHash).IsRequired();
+            entity.Property(u => u.Phone).HasMaxLength(20);
+            entity.Property(u => u.Role).HasConversion<string>();
+        });
+
+        // Staff configuration
+        modelBuilder.Entity<Staff>(entity =>
+        {
+            entity.HasKey(s => s.Id);
+            entity.Property(s => s.EmployeeCode).IsRequired().HasMaxLength(50);
+            entity.Property(s => s.Department).IsRequired().HasMaxLength(100);
+
+            // Staff → User relationship
+            entity.HasOne(s => s.User)
+                  .WithOne()
+                  .HasForeignKey<Staff>(s => s.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Seed Admin
+        var adminId = Guid.NewGuid();
+        modelBuilder.Entity<User>().HasData(new
+        {
+            Id = adminId,
+            FullName = "Admin",
+            Email = "admin@motospares.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
+            Role = "Admin",
+            Phone = "0000000000",
+            CreatedAt = DateTime.UtcNow
+        });
     }
 }
