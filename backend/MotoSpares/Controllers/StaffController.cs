@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MotoSpares.Application.DTOs.Staff;
 using MotoSpares.Application.Services;
 
 namespace MotoSpares.Controllers;
 
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class StaffController : ControllerBase
@@ -56,5 +58,11 @@ public class StaffController : ControllerBase
         var result = await _staffService.DeleteStaffAsync(id);
         if (!result) return NotFound();
         return NoContent();
+    }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        throw new Exception("This is a test error");
     }
 }
