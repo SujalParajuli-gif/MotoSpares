@@ -59,4 +59,10 @@ public class StaffController : ControllerBase
         if (!result) return NotFound();
         return NoContent();
     }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        throw new Exception("This is a test error");
+    }
 }
