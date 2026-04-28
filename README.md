@@ -47,11 +47,38 @@ This project is managed in a single repository with separate folders for backend
 
 ```bash
 MotoSpares/
-├── backend/
-├── frontend/
-├── docs/
-├── .gitignore
-└── MotoSpares.slnx
+|-- backend/
+|   |-- MotoSpares.Domain/
+|   |-- MotoSpares.Application/
+|   |-- MotoSpares.Infrastructure/
+|   `-- MotoSpares.API/
+|-- frontend/
+|-- docs/
+|-- .gitignore
+`-- MotoSpares.sln
+```
+
+The backend now follows a 4-project Clean Architecture structure:
+
+```bash
+backend/
+|-- MotoSpares.Domain/
+|   |-- Entities/
+|   `-- Enums/
+|-- MotoSpares.Application/
+|   |-- DTOs/
+|   |-- Interfaces/
+|   `-- Services/
+|-- MotoSpares.Infrastructure/
+|   |-- Data/
+|   |-- Repositories/
+|   |-- Migrations/
+|   `-- DependencyInjection.cs
+`-- MotoSpares.API/
+    |-- Controllers/
+    |-- Middleware/
+    |-- Program.cs
+    `-- appsettings.json
 ```
 
 ## Technology Stack
@@ -71,7 +98,7 @@ MotoSpares/
 
 ## Design Approach
 
-The project is being developed with a structured and maintainable approach. The backend follows a clean folder organization to separate controllers, models, data access, services, DTOs, and supporting components. This helps keep the codebase readable and makes collaboration easier within the team.
+The project is being developed with a structured and maintainable approach. The backend now follows a Clean Architecture setup with separate Domain, Application, Infrastructure, and API projects inside the `backend/` folder. This keeps business logic, data access, and presentation concerns separated more clearly and supports future scalability and maintenance.
 
 Version control is managed through GitHub using branches for feature-based development. This supports safer collaboration, clearer commit history, and better project tracking throughout the coursework.
 
@@ -99,7 +126,7 @@ This project was developed for the **CS6004NI Application Development** module a
 
 ## Repository Notes
 
-- `backend/` contains the ASP.NET Core Web API project
+- `backend/` contains the ASP.NET Core solution organized into `MotoSpares.Domain`, `MotoSpares.Application`, `MotoSpares.Infrastructure`, and `MotoSpares.API`
 - `frontend/` is reserved for the client-side application
 - `docs/` stores project-related supporting materials
 
