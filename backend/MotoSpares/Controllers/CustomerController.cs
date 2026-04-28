@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MotoSpares.Application.DTOs.Customers;
 using MotoSpares.Application.Services;
 
 namespace MotoSpares.Controllers;
 
+[Authorize(Roles = "Admin,Staff")]
 [ApiController]
 [Route("api/[controller]")]
 public class CustomerController : ControllerBase

@@ -137,6 +137,8 @@ public class AppDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
+       
+
         var adminId = Guid.Parse("11111111-1111-1111-1111-111111111111");
 
         modelBuilder.Entity<User>().HasData(new

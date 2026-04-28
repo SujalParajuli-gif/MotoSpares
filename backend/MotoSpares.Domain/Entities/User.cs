@@ -31,4 +31,9 @@ public class User
         FullName = fullName.Trim();
         Phone = phone.Trim();
     }
+
+    public void UpdatePassword(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+    }
 }
