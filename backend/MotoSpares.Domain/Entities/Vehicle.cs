@@ -1,34 +1,25 @@
-﻿namespace MotoSpares.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+
+namespace MotoSpares.Domain.Entities;
 
 public class Vehicle
 {
-    public Guid Id { get; private set; }
-    public Guid CustomerId { get; private set; }
+    public int VehicleId { get; set; }
 
-    public string VehicleNumber { get; private set; } = string.Empty;
-    public string Brand { get; private set; } = string.Empty;
-    public string Model { get; private set; } = string.Empty;
-    public int Year { get; private set; }
+    [Required]
+    [StringLength(50)]
+    public string VehicleNumber { get; set; } = string.Empty;
 
-    public Customer? Customer { get; private set; }
+    [Required]
+    [StringLength(100)]
+    public string Make { get; set; } = string.Empty;
 
-    private Vehicle() { }
+    [Required]
+    [StringLength(100)]
+    public string Model { get; set; } = string.Empty;
 
-    public Vehicle(Guid customerId, string vehicleNumber, string brand, string model, int year)
-    {
-        Id = Guid.NewGuid();
-        CustomerId = customerId;
-        VehicleNumber = vehicleNumber.Trim().ToUpper();
-        Brand = brand.Trim();
-        Model = model.Trim();
-        Year = year;
-    }
+    [Range(1900, 2100)]
+    public int Year { get; set; }
 
-    public void UpdateDetails(string vehicleNumber, string brand, string model, int year)
-    {
-        VehicleNumber = vehicleNumber.Trim().ToUpper();
-        Brand = brand.Trim();
-        Model = model.Trim();
-        Year = year;
-    }
+    public ICollection<UserVehicle> UserVehicles { get; set; } = new List<UserVehicle>();
 }

@@ -1,34 +1,25 @@
-﻿namespace MotoSpares.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+
+namespace MotoSpares.Domain.Entities;
 
 public class Vendor
 {
-    public Guid Id { get; private set; }
-    public string VendorName { get; private set; } = string.Empty;
-    public string ContactPerson { get; private set; } = string.Empty;
-    public string Phone { get; private set; } = string.Empty;
-    public string Email { get; private set; } = string.Empty;
-    public string Address { get; private set; } = string.Empty;
-    public DateTime CreatedAt { get; private set; }
+    public int VendorId { get; set; }
 
-    private Vendor() { }
+    [Required]
+    [StringLength(100)]
+    public string VendorName { get; set; } = string.Empty;
 
-    public Vendor(string vendorName, string contactPerson, string phone, string email, string address)
-    {
-        Id = Guid.NewGuid();
-        VendorName = vendorName.Trim();
-        ContactPerson = contactPerson.Trim();
-        Phone = phone.Trim();
-        Email = email.Trim().ToLower();
-        Address = address.Trim();
-        CreatedAt = DateTime.UtcNow;
-    }
+    [EmailAddress]
+    [StringLength(100)]
+    public string? VendorEmail { get; set; }
 
-    public void UpdateDetails(string vendorName, string contactPerson, string phone, string email, string address)
-    {
-        VendorName = vendorName.Trim();
-        ContactPerson = contactPerson.Trim();
-        Phone = phone.Trim();
-        Email = email.Trim().ToLower();
-        Address = address.Trim();
-    }
+    [StringLength(20)]
+    public string? VendorPhone { get; set; }
+
+    [StringLength(200)]
+    public string? VendorAddress { get; set; }
+
+    public ICollection<PurchaseInvoice> PurchaseInvoices { get; set; } = new List<PurchaseInvoice>();
+    public ICollection<UserVendor> UserVendors { get; set; } = new List<UserVendor>();
 }

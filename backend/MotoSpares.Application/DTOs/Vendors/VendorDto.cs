@@ -1,20 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace MotoSpares.Application.DTOs.Vendors;
 
-public class CreateVendorDto
+public class VendorDto
 {
-    [Required]
-    [StringLength(100)]
+    public int VendorId { get; set; }
     public string VendorName { get; set; } = string.Empty;
-
-    [EmailAddress]
-    [StringLength(100)]
     public string? VendorEmail { get; set; }
-
-    [StringLength(20)]
     public string? VendorPhone { get; set; }
-
-    [StringLength(200)]
     public string? VendorAddress { get; set; }
 }

@@ -1,86 +1,98 @@
-﻿using MotoSpares.Application.DTOs.Vendors;
+using Microsoft.Extensions.Logging;
+using MotoSpares.Application.DTOs;
+using MotoSpares.Application.DTOs.Vendors;
+using MotoSpares.Application.Interfaces;
 using MotoSpares.Application.Interfaces.Repositories;
 using MotoSpares.Domain.Entities;
-using System.Numerics;
 
 namespace MotoSpares.Application.Services;
 
-public class VendorService
+public class VendorService : IVendorService
 {
     private readonly IVendorRepository _vendorRepository;
+    private readonly ILogger<VendorService> _logger;
 
-    public VendorService(IVendorRepository vendorRepository)
+    public VendorService(IVendorRepository vendorRepository, ILogger<VendorService> logger)
     {
         _vendorRepository = vendorRepository;
+        _logger = logger;
     }
 
-    public async Task<VendorDto> CreateVendorAsync(CreateVendorDto dto)
+    public async Task<ApiResponse<VendorDto>> CreateAsync(CreateVendorDto dto)
     {
-        var vendor = new Vendor(
-            dto.VendorName,
-            dto.ContactPerson,
-            dto.Phone,
-            dto.Email,
-            dto.Address
-        );
+        var vendor = new Vendor
+        {
+            VendorName = dto.VendorName.Trim(),
+            VendorEmail = dto.VendorEmail?.Trim().ToLower(),
+            VendorPhone = dto.VendorPhone?.Trim(),
+            VendorAddress = dto.VendorAddress?.Trim()
+        };
 
         await _vendorRepository.AddAsync(vendor);
+        _logger.LogInformation("Vendor created: {VendorName}", vendor.VendorName);
 
-        return MapToDto(vendor);
+        return ApiResponse<VendorDto>.Success(MapToDto(vendor), "Vendor created successfully.");
     }
 
-    public async Task<IEnumerable<VendorDto>> GetAllVendorsAsync()
+    public async Task<ApiResponse<List<VendorDto>>> GetAllAsync()
     {
         var vendors = await _vendorRepository.GetAllAsync();
-        return vendors.Select(MapToDto);
+        return ApiResponse<List<VendorDto>>.Success(vendors.Select(MapToDto).ToList());
     }
 
-    public async Task<VendorDto?> GetVendorByIdAsync(Guid id)
+    public async Task<ApiResponse<VendorDto>> GetByIdAsync(int id)
     {
         var vendor = await _vendorRepository.GetByIdAsync(id);
-        if (vendor == null) return null;
+        if (vendor == null)
+        {
+            return ApiResponse<VendorDto>.Fail("Vendor not found.");
+        }
 
-        return MapToDto(vendor);
+        return ApiResponse<VendorDto>.Success(MapToDto(vendor));
     }
 
-    public async Task<VendorDto?> UpdateVendorAsync(Guid id, UpdateVendorDto dto)
+    public async Task<ApiResponse<VendorDto>> UpdateAsync(int id, UpdateVendorDto dto)
     {
         var vendor = await _vendorRepository.GetByIdAsync(id);
-        if (vendor == null) return null;
+        if (vendor == null)
+        {
+            return ApiResponse<VendorDto>.Fail("Vendor not found.");
+        }
 
-        vendor.UpdateDetails(
-            dto.VendorName,
-            dto.ContactPerson,
-            dto.Phone,
-            dto.Email,
-            dto.Address
-        );
+        vendor.VendorName = dto.VendorName.Trim();
+        vendor.VendorEmail = dto.VendorEmail?.Trim().ToLower();
+        vendor.VendorPhone = dto.VendorPhone?.Trim();
+        vendor.VendorAddress = dto.VendorAddress?.Trim();
 
         await _vendorRepository.UpdateAsync(vendor);
+        _logger.LogInformation("Vendor updated: {VendorId}", vendor.VendorId);
 
-        return MapToDto(vendor);
+        return ApiResponse<VendorDto>.Success(MapToDto(vendor), "Vendor updated successfully.");
     }
 
-    public async Task<bool> DeleteVendorAsync(Guid id)
+    public async Task<ApiResponse<bool>> DeleteAsync(int id)
     {
         var vendor = await _vendorRepository.GetByIdAsync(id);
-        if (vendor == null) return false;
+        if (vendor == null)
+        {
+            return ApiResponse<bool>.Fail("Vendor not found.");
+        }
 
         await _vendorRepository.DeleteAsync(id);
-        return true;
+        _logger.LogInformation("Vendor deleted: {VendorId}", id);
+
+        return ApiResponse<bool>.Success(true, "Vendor deleted successfully.");
     }
 
     private static VendorDto MapToDto(Vendor vendor)
     {
         return new VendorDto
         {
-            Id = vendor.Id,
+            VendorId = vendor.VendorId,
             VendorName = vendor.VendorName,
-            ContactPerson = vendor.ContactPerson,
-            Phone = vendor.Phone,
-            Email = vendor.Email,
-            Address = vendor.Address,
-            CreatedAt = vendor.CreatedAt
+            VendorEmail = vendor.VendorEmail,
+            VendorPhone = vendor.VendorPhone,
+            VendorAddress = vendor.VendorAddress
         };
     }
 }
