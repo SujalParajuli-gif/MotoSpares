@@ -1,15 +1,17 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using MotoSpares.Application.Interfaces;
-using MotoSpares.Application.Interfaces.Repositories;
-using MotoSpares.Application.Services;
-using MotoSpares.Infrastructure;
-using MotoSpares.Infrastructure.Data;
-using MotoSpares.Infrastructure.Repositories;
-using MotoSpares.Middleware;
-
-var builder = WebApplication.CreateBuilder(args);
+<<<<<<< HEAD
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using MotoSpares.Data.Context;
+using MotoSpares.Interfaces.Repositories;
+using MotoSpares.Interfaces.Services;
+using MotoSpares.Repositories;
+using MotoSpares.Services;
+using Scalar.AspNetCore;
+=======
+>>>>>>> 908879641409add8a9158e8d05d37048c85134a4
 
 
 builder.Services.AddControllers();
@@ -82,6 +84,15 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 builder.Services.AddScoped<IVendorService, VendorService>();
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -94,9 +105,16 @@ app.UseMiddleware<GlobalExceptionHandler>();
 
 if (app.Environment.IsDevelopment())
 {
+<<<<<<< HEAD
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+=======
     app.UseSwagger();
     app.UseSwaggerUI();
+>>>>>>> 908879641409add8a9158e8d05d37048c85134a4
 }
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
