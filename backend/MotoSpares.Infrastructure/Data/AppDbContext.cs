@@ -1,40 +1,153 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MotoSpares.Domain.Entities;
-
-csharpusing Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using MotoSpares.Domain.Entities;
+using MotoSpares.Domain.Enums;
 
 namespace MotoSpares.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>(options)
+public class AppDbContext : DbContext
 {
-    public DbSet<Customer> Customers => Set<Customer>();
-    public DbSet<Vehicle> Vehicles => Set<Vehicle>();
-    public DbSet<Part> Parts => Set<Part>();
-    public DbSet<SalesInvoice> SalesInvoices => Set<SalesInvoice>();
-    public DbSet<SalesInvoiceItem> SalesInvoiceItems => Set<SalesInvoiceItem>();
-    public DbSet<PurchaseInvoice> PurchaseInvoices => Set<PurchaseInvoice>();
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Staff> Staff => Set<Staff>();
     public DbSet<Vendor> Vendors => Set<Vendor>();
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-        SeedRoles(builder);
-    }
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Vehicle> Vehicles => Set<Vehicle>();
 
-    private static void SeedRoles(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var roles = new List<IdentityRole<Guid>>
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>(entity =>
         {
-            new() { Id = Guid.Parse("a18be9c0-aa65-4af8-bd17-00bd9344e575"), Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = "1" },
-            new() { Id = Guid.Parse("fbd4c411-4a98-4a46-84a4-4e6f2924e000"), Name = "Staff", NormalizedName = "STAFF", ConcurrencyStamp = "2" },
-            new() { Id = Guid.Parse("c3aa5a4d-8d7e-4f4a-9f3d-1d6c8d3e0000"), Name = "Customer", NormalizedName = "CUSTOMER", ConcurrencyStamp = "3" }
-        };
-        builder.Entity<IdentityRole<Guid>>().HasData(roles);
+            entity.HasKey(u => u.Id);
+            entity.HasIndex(u => u.Email).IsUnique();
+
+            entity.Property(u => u.FullName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(u => u.Email)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(u => u.PasswordHash)
+                  .IsRequired();
+
+            entity.Property(u => u.Phone)
+                  .HasMaxLength(20);
+
+            entity.Property(u => u.Role)
+                  .HasConversion<string>();
+
+            entity.Property(u => u.CreatedAt)
+                  .IsRequired();
+        });
+
+        modelBuilder.Entity<Staff>(entity =>
+        {
+            entity.HasKey(s => s.Id);
+
+            entity.Property(s => s.EmployeeCode)
+                  .IsRequired()
+                  .HasMaxLength(50);
+
+            entity.Property(s => s.Department)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(s => s.JoinedAt)
+                  .IsRequired();
+
+            entity.HasOne(s => s.User)
+                  .WithOne()
+                  .HasForeignKey<Staff>(s => s.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Vendor>(entity =>
+        {
+            entity.HasKey(v => v.Id);
+
+            entity.Property(v => v.VendorName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.ContactPerson)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Phone)
+                  .HasMaxLength(20);
+
+            entity.Property(v => v.Email)
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Address)
+                  .HasMaxLength(200);
+
+            entity.Property(v => v.CreatedAt)
+                  .IsRequired();
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.Property(c => c.FullName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(c => c.Phone)
+                  .HasMaxLength(20);
+
+            entity.Property(c => c.Email)
+                  .HasMaxLength(100);
+
+            entity.Property(c => c.Address)
+                  .HasMaxLength(200);
+
+            entity.Property(c => c.CreatedAt)
+                  .IsRequired();
+        });
+
+        modelBuilder.Entity<Vehicle>(entity =>
+        {
+            entity.HasKey(v => v.Id);
+
+            entity.Property(v => v.VehicleNumber)
+                  .IsRequired()
+                  .HasMaxLength(50);
+
+            entity.Property(v => v.Brand)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Model)
+                  .IsRequired()
+                  .HasMaxLength(100);
+
+            entity.Property(v => v.Year)
+                  .IsRequired();
+
+            entity.HasOne(v => v.Customer)
+                  .WithMany(c => c.Vehicles)
+                  .HasForeignKey(v => v.CustomerId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        var adminId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+
+        modelBuilder.Entity<User>().HasData(new
+        {
+            Id = adminId,
+            FullName = "Admin",
+            Email = "admin@motospares.com",
+            PasswordHash = "$2a$11$4Wj2kV8smnCmlkboVz44bON6EwIgupC5O/yB8gq0XhYiw8WpfLr3G",
+            Role = UserRole.Admin,
+            Phone = "0000000000",
+            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+        });
     }
 }
