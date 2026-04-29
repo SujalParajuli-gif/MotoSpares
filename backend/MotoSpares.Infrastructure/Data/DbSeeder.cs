@@ -54,5 +54,69 @@ public static class DbSeeder
                 logger.LogError("Failed to create admin user: {Errors}", errors);
             }
         }
+
+        // Seed Staff
+        var staffEmail = "staff1@motospares.com";
+        var staffUser = await userManager.FindByEmailAsync(staffEmail);
+
+        if (staffUser == null)
+        {
+            staffUser = new ApplicationUser
+            {
+                FullName = "System Staff",
+                Email = staffEmail,
+                UserName = staffEmail,
+                PhoneNumber = "9811111111",
+                Address = "Lalitpur, Nepal",
+                Role = "Staff",
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(staffUser, "Staff@123");
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(staffUser, "Staff");
+                logger.LogInformation("Default staff user created: {Email}", staffEmail);
+            }
+            else
+            {
+                var errors = string.Join("; ", result.Errors.Select(e => e.Description));
+                logger.LogError("Failed to create staff user: {Errors}", errors);
+            }
+        }
+
+        // Seed Customer
+        var customerEmail = "customer@motospares.com";
+        var customerUser = await userManager.FindByEmailAsync(customerEmail);
+
+        if (customerUser == null)
+        {
+            customerUser = new ApplicationUser
+            {
+                FullName = "System Customer",
+                Email = customerEmail,
+                UserName = customerEmail,
+                PhoneNumber = "9822222222",
+                Address = "Bhaktapur, Nepal",
+                Role = "Customer",
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(customerUser, "Customer@123");
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(customerUser, "Customer");
+                logger.LogInformation("Default customer user created: {Email}", customerEmail);
+            }
+            else
+            {
+                var errors = string.Join("; ", result.Errors.Select(e => e.Description));
+                logger.LogError("Failed to create customer user: {Errors}", errors);
+            }
+        }
     }
 }
