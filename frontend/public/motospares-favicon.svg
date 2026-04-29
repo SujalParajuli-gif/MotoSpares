@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Outer gear teeth -->
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#0d9488" stroke-width="12" stroke-dasharray="15 10" />
+  <!-- Inner rim -->
+  <circle cx="50" cy="50" r="25" fill="none" stroke="#0f766e" stroke-width="8" />
+  <!-- Center hub -->
+  <circle cx="50" cy="50" r="10" fill="#0d9488" />
+</svg>

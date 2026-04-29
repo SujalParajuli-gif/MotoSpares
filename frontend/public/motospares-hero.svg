@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900" fill="none">
+  <!-- Background sky gradient -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bae6fd"/>
+      <stop offset="40%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#f0fdfa"/>
+    </linearGradient>
+    <linearGradient id="mountain1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+    <linearGradient id="mountain2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <linearGradient id="mountain3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#99f6e4"/>
+      <stop offset="100%" stop-color="#ccfbf1"/>
+    </linearGradient>
+    <linearGradient id="bikeBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="60%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="curveClip">
+      <path d="M0,0 L800,0 L800,900 Q600,850 400,870 Q200,890 0,830 Z"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#curveClip)">
+    <!-- Sky -->
+    <rect width="800" height="900" fill="url(#sky)"/>
+
+    <!-- Sun -->
+    <circle cx="600" cy="120" r="60" fill="url(#sun)"/>
+    <circle cx="600" cy="120" r="35" fill="#fbbf24"/>
+    <!-- Sun rays -->
+    <g stroke="#f59e0b" stroke-width="3" stroke-linecap="round" opacity="0.6">
+      <line x1="600" y1="55" x2="600" y2="40"/>
+      <line x1="600" y1="200" x2="600" y2="215"/>
+      <line x1="535" y1="120" x2="520" y2="120"/>
+      <line x1="665" y1="120" x2="680" y2="120"/>
+      <line x1="554" y1="74" x2="543" y2="63"/>
+      <line x1="646" y1="166" x2="657" y2="177"/>
+      <line x1="646" y1="74" x2="657" y2="63"/>
+      <line x1="554" y1="166" x2="543" y2="177"/>
+    </g>
+
+    <!-- Cloud 1 -->
+    <g opacity="0.9" transform="translate(120, 80)">
+      <ellipse cx="40" cy="30" rx="40" ry="20" fill="white"/>
+      <ellipse cx="80" cy="25" rx="35" ry="22" fill="white"/>
+      <ellipse cx="60" cy="35" rx="45" ry="18" fill="white"/>
+    </g>
+
+    <!-- Cloud 2 -->
+    <g opacity="0.7" transform="translate(350, 50)">
+      <ellipse cx="30" cy="25" rx="30" ry="15" fill="white"/>
+      <ellipse cx="60" cy="22" rx="28" ry="16" fill="white"/>
+      <ellipse cx="45" cy="30" rx="35" ry="13" fill="white"/>
+    </g>
+
+    <!-- Cloud 3 -->
+    <g opacity="0.5" transform="translate(680, 100)">
+      <ellipse cx="25" cy="20" rx="25" ry="12" fill="white"/>
+      <ellipse cx="50" cy="18" rx="22" ry="14" fill="white"/>
+    </g>
+
+    <!-- Far mountains -->
+    <polygon points="0,400 100,280 200,340 350,250 500,320 600,270 750,350 800,300 800,500 0,500" fill="url(#mountain1)" opacity="0.5"/>
+    
+    <!-- Mid mountains -->
+    <polygon points="0,450 80,350 180,400 280,310 400,380 500,340 620,390 720,330 800,380 800,550 0,550" fill="url(#mountain2)" opacity="0.6"/>
+
+    <!-- Near mountains -->
+    <polygon points="0,500 60,430 160,470 250,400 380,450 480,410 580,460 680,400 780,440 800,420 800,600 0,600" fill="url(#mountain3)" opacity="0.7"/>
+
+    <!-- Trees left group -->
+    <g transform="translate(30, 440)">
+      <polygon points="25,0 50,80 0,80" fill="#0f766e"/>
+      <polygon points="25,30 55,100 -5,100" fill="#0d9488"/>
+      <polygon points="25,60 58,120 -8,120" fill="#14b8a6"/>
+      <rect x="20" y="120" width="10" height="25" fill="#78350f"/>
+    </g>
+    <g transform="translate(80, 460)">
+      <polygon points="20,0 40,65 0,65" fill="#0f766e"/>
+      <polygon points="20,25 45,85 -5,85" fill="#0d9488"/>
+      <polygon points="20,50 48,105 -8,105" fill="#14b8a6"/>
+      <rect x="16" y="105" width="8" height="20" fill="#78350f"/>
+    </g>
+    <g transform="translate(130, 450)">
+      <polygon points="22,0 44,70 0,70" fill="#0f766e"/>
+      <polygon points="22,28 48,90 -4,90" fill="#0d9488"/>
+      <polygon points="22,55 50,110 -6,110" fill="#14b8a6"/>
+      <rect x="18" y="110" width="8" height="22" fill="#78350f"/>
+    </g>
+
+    <!-- Trees right group -->
+    <g transform="translate(650, 430)">
+      <polygon points="30,0 60,90 0,90" fill="#0f766e"/>
+      <polygon points="30,35 65,110 -5,110" fill="#0d9488"/>
+      <polygon points="30,65 68,130 -8,130" fill="#14b8a6"/>
+      <rect x="24" y="130" width="12" height="28" fill="#78350f"/>
+    </g>
+    <g transform="translate(710, 455)">
+      <polygon points="20,0 40,65 0,65" fill="#0f766e"/>
+      <polygon points="20,25 44,85 -4,85" fill="#0d9488"/>
+      <polygon points="20,50 46,105 -6,105" fill="#14b8a6"/>
+      <rect x="16" y="105" width="8" height="20" fill="#78350f"/>
+    </g>
+    <g transform="translate(750, 445)">
+      <polygon points="18,0 36,60 0,60" fill="#0f766e"/>
+      <polygon points="18,22 38,75 -2,75" fill="#0d9488"/>
+      <polygon points="18,44 40,95 -4,95" fill="#14b8a6"/>
+      <rect x="14" y="95" width="8" height="18" fill="#78350f"/>
+    </g>
+
+    <!-- Ground / grass -->
+    <ellipse cx="400" cy="650" rx="500" ry="120" fill="#86efac" opacity="0.5"/>
+    <ellipse cx="400" cy="680" rx="550" ry="130" fill="#4ade80" opacity="0.4"/>
+
+    <!-- Road -->
+    <path d="M-50,700 Q200,660 400,670 Q600,680 850,650 L850,720 Q600,750 400,740 Q200,730 -50,770 Z" fill="url(#road)"/>
+    <!-- Road center line -->
+    <path d="M-50,735 Q200,695 400,705 Q600,715 850,685" stroke="#fbbf24" stroke-width="3" stroke-dasharray="20,15" fill="none" opacity="0.7"/>
+
+    <!-- ═══ Car ═══ -->
+    <g transform="translate(100, 560)">
+      <!-- Shadow -->
+      <ellipse cx="300" cy="90" rx="240" ry="15" fill="#000" opacity="0.15"/>
+      
+      <!-- Car Body -->
+      <path d="M60,60 Q40,30 90,20 L200,5 Q260,-40 330,-40 L410,-20 L530,10 Q560,20 560,50 L550,80 Q540,90 520,90 L480,90 Q470,35 400,35 Q330,35 320,90 L180,90 Q170,35 100,35 Q30,35 20,90 L20,80 Q10,70 20,50 Z" fill="url(#bikeBody)"/>
+
+      <!-- Front Bumper/Grill area -->
+      <path d="M520,40 Q550,40 555,60 L545,85 L510,85 Z" fill="#0f766e"/>
+      <rect x="525" y="55" width="25" height="15" rx="3" fill="#022c22"/>
+
+      <!-- Windows -->
+      <path d="M220,5 Q270,-35 320,-35 L390,-15 L360,10 L230,15 Z" fill="#1e293b"/>
+      <!-- Window reflection/highlight -->
+      <path d="M235,5 Q275,-25 315,-25 L365,-10 L345,5 L245,10 Z" fill="#334155"/>
+      
+      <!-- Driver Silhouette inside window -->
+      <g transform="translate(300, -15)">
+        <circle cx="0" cy="0" r="10" fill="#0f172a"/>
+        <path d="M-15,25 Q0,5 15,25 Z" fill="#0f172a"/>
+        <!-- Face/Skin tone (subtle) -->
+        <circle cx="2" cy="0" r="8" fill="#fca5a5" opacity="0.8"/>
+        <!-- Hair -->
+        <path d="M-8,0 Q0,-12 10,-2 L10,5 Q0,-5 -8,5 Z" fill="#0f172a"/>
+      </g>
+
+      <!-- Headlight -->
+      <path d="M490,25 Q520,25 540,35 L495,35 Z" fill="#fef08a"/>
+      <!-- Headlight beam -->
+      <path d="M540,35 L700,45 L700,75 L520,45 Z" fill="#fef08a" opacity="0.2"/>
+
+      <!-- Tail light -->
+      <path d="M30,35 Q20,30 40,25 L45,35 Z" fill="#ef4444"/>
+
+      <!-- Door cuts -->
+      <path d="M220,10 L210,80 M360,10 L370,80" stroke="#0d9488" stroke-width="2" fill="none"/>
+      
+      <!-- Door Handles -->
+      <line x1="240" y1="30" x2="260" y2="30" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/>
+      <line x1="380" y1="30" x2="400" y2="30" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/>
+
+      <!-- Back Wheel -->
+      <circle cx="100" cy="85" r="55" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+      <circle cx="100" cy="85" r="35" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="100" cy="85" r="8" fill="#475569"/>
+      <!-- Back Wheel Spokes -->
+      <g stroke="#94a3b8" stroke-width="8" stroke-linecap="round">
+        <line x1="100" y1="85" x2="100" y2="55"/>
+        <line x1="100" y1="85" x2="128" y2="94"/>
+        <line x1="100" y1="85" x2="117" y2="110"/>
+        <line x1="100" y1="85" x2="83" y2="110"/>
+        <line x1="100" y1="85" x2="72" y2="94"/>
+      </g>
+
+      <!-- Front Wheel -->
+      <circle cx="400" cy="85" r="55" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+      <circle cx="400" cy="85" r="35" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="400" cy="85" r="8" fill="#475569"/>
+      <!-- Front Wheel Spokes -->
+      <g stroke="#94a3b8" stroke-width="8" stroke-linecap="round">
+        <line x1="400" y1="85" x2="400" y2="55"/>
+        <line x1="400" y1="85" x2="428" y2="94"/>
+        <line x1="400" y1="85" x2="417" y2="110"/>
+        <line x1="400" y1="85" x2="383" y2="110"/>
+        <line x1="400" y1="85" x2="372" y2="94"/>
+      </g>
+    </g>
+
+    <!-- Speed lines -->
+    <g stroke="#94a3b8" stroke-width="2" opacity="0.3" stroke-linecap="round">
+      <line x1="180" y1="620" x2="130" y2="625"/>
+      <line x1="170" y1="640" x2="100" y2="648"/>
+      <line x1="175" y1="660" x2="120" y2="665"/>
+      <line x1="190" y1="680" x2="140" y2="684"/>
+    </g>
+
+    <!-- Small spare parts floating (decorative) -->
+    <!-- Gear/cog 1 -->
+    <g transform="translate(100, 300)" opacity="0.15">
+      <circle cx="20" cy="20" r="15" fill="none" stroke="#0f766e" stroke-width="3"/>
+      <circle cx="20" cy="20" r="6" fill="none" stroke="#0f766e" stroke-width="2"/>
+      <g stroke="#0f766e" stroke-width="3">
+        <line x1="20" y1="2" x2="20" y2="8"/>
+        <line x1="20" y1="32" x2="20" y2="38"/>
+        <line x1="2" y1="20" x2="8" y2="20"/>
+        <line x1="32" y1="20" x2="38" y2="20"/>
+      </g>
+    </g>
+
+    <!-- Gear/cog 2 -->
+    <g transform="translate(700, 250)" opacity="0.12">
+      <circle cx="15" cy="15" r="12" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+      <circle cx="15" cy="15" r="5" fill="none" stroke="#0f766e" stroke-width="2"/>
+      <g stroke="#0f766e" stroke-width="2.5">
+        <line x1="15" y1="0" x2="15" y2="5"/>
+        <line x1="15" y1="25" x2="15" y2="30"/>
+        <line x1="0" y1="15" x2="5" y2="15"/>
+        <line x1="25" y1="15" x2="30" y2="15"/>
+      </g>
+    </g>
+
+    <!-- Wrench icon -->
+    <g transform="translate(50, 550) rotate(-30)" opacity="0.12">
+      <rect x="0" y="8" width="50" height="6" rx="3" fill="#0f766e"/>
+      <circle cx="55" cy="11" r="10" fill="none" stroke="#0f766e" stroke-width="3"/>
+    </g>
+
+    <!-- Ground grass details -->
+    <g fill="#22c55e" opacity="0.5">
+      <ellipse cx="50" cy="750" rx="15" ry="5"/>
+      <ellipse cx="150" cy="730" rx="12" ry="4"/>
+      <ellipse cx="650" cy="720" rx="14" ry="5"/>
+      <ellipse cx="750" cy="740" rx="11" ry="4"/>
+      <ellipse cx="350" cy="755" rx="13" ry="4"/>
+      <ellipse cx="500" cy="745" rx="10" ry="3"/>
+    </g>
+
+    <!-- Bottom greenery -->
+    <ellipse cx="400" cy="800" rx="500" ry="140" fill="#4ade80" opacity="0.3"/>
+    <ellipse cx="400" cy="860" rx="550" ry="100" fill="#86efac" opacity="0.4"/>
+  </g>
+</svg>
