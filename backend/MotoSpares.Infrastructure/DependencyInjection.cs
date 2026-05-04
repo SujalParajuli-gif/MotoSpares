@@ -4,6 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MotoSpares.Domain.Entities;
 using MotoSpares.Infrastructure.Data;
+using MotoSpares.Application.Interfaces;
+using MotoSpares.Application.Interfaces.Repositories;
+using MotoSpares.Application.Services;
+using MotoSpares.Infrastructure.Repositories;
+
 
 namespace MotoSpares.Infrastructure;
 
@@ -16,7 +21,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+        services.AddIdentityCore<ApplicationUser>(options =>
         {
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = true;
@@ -26,8 +31,19 @@ public static class DependencyInjection
 
             options.User.RequireUniqueEmail = true;
         })
+        .AddRoles<IdentityRole<Guid>>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddSignInManager();
+
+        // Repositories
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IVendorRepository, VendorRepository>();
+
+        // Services
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IVendorService, VendorService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }

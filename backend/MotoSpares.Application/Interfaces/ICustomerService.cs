@@ -1,12 +1,14 @@
-﻿using MotoSpares.Application.DTOs.Customers;
+using MotoSpares.Application.DTOs.Customer;
+
 
 namespace MotoSpares.Application.Interfaces;
 
 public interface ICustomerService
 {
-    // Lightweight list — for staff dashboard
     Task<List<CustomerListDto>> GetAllCustomersAsync();
-
-    // Full profile — details + vehicles + history
-    Task<CustomerProfileDto?> GetCustomerProfileAsync(Guid userId);
+    
+    // Feature 8 endpoints
+    Task<CustomerDetailsDto?> GetCustomerDetailsAsync(Guid userId);
+    Task<CustomerHistoryDto?> GetCustomerHistoryAsync(Guid userId);
+    Task<CustomerVehiclesDto?> GetCustomerVehiclesAsync(Guid userId);
 }

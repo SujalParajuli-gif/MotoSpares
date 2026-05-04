@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MotoSpares.Application.Interfaces;
 
@@ -16,43 +16,40 @@ public class CustomerController : ControllerBase
         _customerService = customerService;
     }
 
-    /// <summary>
-    /// GET api/customers
-    /// Returns all customers — lightweight list for staff dashboard
-    /// </summary>
     [HttpGet]
     public async Task<IActionResult> GetAllCustomers()
     {
         var customers = await _customerService.GetAllCustomersAsync();
-
-        return Ok(new
-        {
-            isSuccess = true,
-            count = customers.Count,
-            data = customers
-        });
+        return Ok(new { isSuccess = true, count = customers.Count, data = customers });
     }
 
-    /// <summary>
-    /// GET api/customers/{id}
-    /// Returns full profile — details + vehicles + purchase history
-    /// </summary>
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetCustomerProfile(Guid id)
+    [HttpGet("{id:guid}/details")]
+    public async Task<IActionResult> GetCustomerDetails(Guid id)
     {
-        var profile = await _customerService.GetCustomerProfileAsync(id);
+        var details = await _customerService.GetCustomerDetailsAsync(id);
+        if (details == null)
+            return NotFound(new { isSuccess = false, message = "Customer not found." });
 
-        if (profile is null)
-            return NotFound(new
-            {
-                isSuccess = false,
-                message = "Customer not found."
-            });
+        return Ok(new { isSuccess = true, data = details });
+    }
 
-        return Ok(new
-        {
-            isSuccess = true,
-            data = profile
-        });
+    [HttpGet("{id:guid}/history")]
+    public async Task<IActionResult> GetCustomerHistory(Guid id)
+    {
+        var history = await _customerService.GetCustomerHistoryAsync(id);
+        if (history == null)
+            return NotFound(new { isSuccess = false, message = "Customer not found." });
+
+        return Ok(new { isSuccess = true, data = history });
+    }
+
+    [HttpGet("{id:guid}/vehicles")]
+    public async Task<IActionResult> GetCustomerVehicles(Guid id)
+    {
+        var vehicles = await _customerService.GetCustomerVehiclesAsync(id);
+        if (vehicles == null)
+            return NotFound(new { isSuccess = false, message = "Customer not found." });
+
+        return Ok(new { isSuccess = true, data = vehicles });
     }
 }

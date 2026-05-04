@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using MotoSpares.Application.DTOs.Customers;
 using MotoSpares.Application.Interfaces.Repositories;
+using MotoSpares.Domain.Entities;
 using MotoSpares.Infrastructure.Data;
 
 namespace MotoSpares.Infrastructure.Repositories;
@@ -14,86 +14,33 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
-    public async Task<List<CustomerListDto>> GetAllCustomersAsync()
+    public async Task<List<ApplicationUser>> GetAllCustomersAsync()
     {
-        // Only return users with Role = "Customer"
         return await _context.Users
             .AsNoTracking()
+            .AsSplitQuery()
             .Where(u => u.Role == "Customer")
-            .Select(u => new CustomerListDto
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                Email = u.Email,
-                PhoneNumber = u.PhoneNumber,
-                Address = u.Address,
-                CreatedAt = u.CreatedAt,
-                TotalVehicles = u.UserVehicles.Count,
-                TotalInvoices = u.UserSaleInvoices.Count
-            })
+            .Include(u => u.UserVehicles)
+            .Include(u => u.UserSaleInvoices)
             .OrderBy(u => u.FullName)
             .ToListAsync();
     }
 
-    public async Task<CustomerProfileDto?> GetCustomerProfileAsync(Guid userId)
+    public async Task<ApplicationUser?> GetCustomerByIdAsync(Guid userId)
     {
-        var customer = await _context.Users
+        return await _context.Users
             .AsNoTracking()
+            .AsSplitQuery()
             .Where(u => u.Id == userId && u.Role == "Customer")
-            .Select(u => new CustomerProfileDto
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                Email = u.Email,
-                PhoneNumber = u.PhoneNumber,
-                Address = u.Address,
-                Role = u.Role,
-                CreatedAt = u.CreatedAt,
-
-                // Vehicles via UserVehicle junction
-                Vehicles = u.UserVehicles
-                    .Select(uv => new CustomerVehicleDto
-                    {
-                        VehicleId = uv.Vehicle!.VehicleId,
-                        VehicleNumber = uv.Vehicle.VehicleNumber,
-                        Make = uv.Vehicle.Make,
-                        Model = uv.Vehicle.Model,
-                        Year = uv.Vehicle.Year
-                    })
-                    .ToList(),
-
-                // Invoices via UserSaleInvoice junction
-                // Newest invoices come first
-                PurchaseHistory = u.UserSaleInvoices
-                    .Select(usi => usi.SaleInvoice!)
-                    .OrderByDescending(si => si.SaleDate)
-                    .Select(si => new CustomerInvoiceDto
-                    {
-                        SaleInvoiceId = si.SaleInvoiceId,
-                        SaleDate = si.SaleDate,
-                        Subtotal = si.Subtotal,
-                        DiscountAmount = si.DiscountAmount,
-                        TotalAmount = si.TotalAmount,
-                        PaymentStatus = si.PaymentStatus.ToString(),
-                        CreditDueDate = si.CreditDueDate,
-
-                        // Line items via SaleInvoiceItem → SaleItem → Part
-                        Items = si.SaleInvoiceItems
-    .Select(sii => new CustomerSaleItemDto
-    {
-        PartName = sii.SaleItem!.Part!.PartName,
-        PartSKU = sii.SaleItem.Part.PartNumber,
-        Quantity = sii.SaleItem.SaleQuantity,
-        UnitPrice = sii.SaleItem.SaleUnitPrice,
-        LineTotal = sii.SaleItem.SaleQuantity
-                    * sii.SaleItem.SaleUnitPrice
-    })
-    .ToList()
-                    })
-                    .ToList()
-            })
+            .Include(u => u.UserVehicles)
+                .ThenInclude(uv => uv.Vehicle)
+            .Include(u => u.UserSaleInvoices)
+                .ThenInclude(usi => usi.SaleInvoice)
+                    .ThenInclude(si => si!.SaleInvoiceItems)
+                        .ThenInclude(sii => sii.SaleItem)
+                            .ThenInclude(si => si!.Part)
+            .Include(u => u.UserAppointments)
+                .ThenInclude(ua => ua.Appointment)
             .FirstOrDefaultAsync();
-
-        return customer;
     }
 }
