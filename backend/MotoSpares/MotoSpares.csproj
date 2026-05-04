@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 	<NoWarn>NU1903</NoWarn>
+    <UserSecretsId>23f7fc38-7d5a-4bc7-816a-584ad5591762</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
