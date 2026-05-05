@@ -16,8 +16,9 @@ public class FinanceService : IFinanceService
     public async Task<FinancialSummaryDto> GetDailyReportAsync(DateTime? startDate, DateTime? endDate)
     {
         // Default: Last 7 days
-        var end = endDate ?? DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
-        var start = startDate ?? end.Date.AddDays(-6);
+        var now = DateTime.UtcNow;
+        var end = endDate.HasValue ? DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc) : new DateTime(now.Year, now.Month, now.Day, 23, 59, 59, DateTimeKind.Utc);
+        var start = startDate.HasValue ? DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc) : new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc).AddDays(-6);
 
         var sales = await _financeRepository.GetSalesInDateRangeAsync(start, end);
         var purchases = await _financeRepository.GetPurchasesInDateRangeAsync(start, end);
@@ -53,8 +54,8 @@ public class FinanceService : IFinanceService
     {
         // Default: Current Year
         var currentYear = DateTime.UtcNow.Year;
-        var start = startDate ?? new DateTime(currentYear, 1, 1);
-        var end = endDate ?? new DateTime(currentYear, 12, 31, 23, 59, 59);
+        var start = startDate.HasValue ? DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc) : new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var end = endDate.HasValue ? DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc) : new DateTime(currentYear, 12, 31, 23, 59, 59, DateTimeKind.Utc);
 
         var sales = await _financeRepository.GetSalesInDateRangeAsync(start, end);
         var purchases = await _financeRepository.GetPurchasesInDateRangeAsync(start, end);
@@ -93,8 +94,8 @@ public class FinanceService : IFinanceService
     {
         // Default: Last 5 Years
         var currentYear = DateTime.UtcNow.Year;
-        var start = startDate ?? new DateTime(currentYear - 4, 1, 1);
-        var end = endDate ?? new DateTime(currentYear, 12, 31, 23, 59, 59);
+        var start = startDate.HasValue ? DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc) : new DateTime(currentYear - 4, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var end = endDate.HasValue ? DateTime.SpecifyKind(endDate.Value, DateTimeKind.Utc) : new DateTime(currentYear, 12, 31, 23, 59, 59, DateTimeKind.Utc);
 
         var sales = await _financeRepository.GetSalesInDateRangeAsync(start, end);
         var purchases = await _financeRepository.GetPurchasesInDateRangeAsync(start, end);
