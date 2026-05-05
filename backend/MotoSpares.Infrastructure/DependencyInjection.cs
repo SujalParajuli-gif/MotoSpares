@@ -39,11 +39,13 @@ public static class DependencyInjection
         // Repositories
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();
+        services.AddScoped<IFinanceRepository, FinanceRepository>();
 
         // Services
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IVendorService, VendorService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IFinanceService, FinanceService>();
 
         return services;
     }
