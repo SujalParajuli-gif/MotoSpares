@@ -79,6 +79,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<IVendorRepository, VendorRepository>();
 builder.Services.AddScoped<IVendorService, VendorService>();
 
