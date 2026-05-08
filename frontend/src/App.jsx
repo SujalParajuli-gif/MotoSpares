@@ -9,6 +9,7 @@ import SignupPage from './pages/auth/SignupPage';
 
 // Role dashboards
 import AdminDashboard from './pages/admin/AdminDashboard';
+import ManageStaff from './pages/admin/ManageStaff';
 import StaffDashboard from './pages/staff/StaffDashboard';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import ManageVehicles from './pages/customer/ManageVehicles';
@@ -49,6 +50,14 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['Admin']}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/staff"
+            element={
+              <ProtectedRoute allowedRoles={['Admin']}>
+                <ManageStaff />
               </ProtectedRoute>
             }
           />
