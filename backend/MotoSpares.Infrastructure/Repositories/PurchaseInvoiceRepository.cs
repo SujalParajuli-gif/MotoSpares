@@ -5,22 +5,19 @@ using MotoSpares.Infrastructure.Data;
 
 namespace MotoSpares.Infrastructure.Repositories;
 
-public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository
+public class PurchaseInvoiceRepository : RepositoryBase<PurchaseInvoice>, IPurchaseInvoiceRepository
 {
-    private readonly AppDbContext _context;
-
-    public PurchaseInvoiceRepository(AppDbContext context)
+    public PurchaseInvoiceRepository(AppDbContext context) : base(context)
     {
-        _context = context;
     }
 
-    public async Task<PurchaseInvoice?> GetByIdAsync(int id)
+    public new async Task<PurchaseInvoice?> GetByIdAsync(int id)
     {
         return await _context.PurchaseInvoices
             .Include(p => p.Vendor)
             .Include(p => p.PurchaseInvoiceItems)
-                .ThenInclude(pi => pi.PurchaseItem)
-                    .ThenInclude(item => item.Part)
+                .ThenInclude(pi => pi.PurchaseItem!)
+                    .ThenInclude(item => item.Part!)
             .FirstOrDefaultAsync(p => p.PurchaseInvoiceId == id);
     }
 
@@ -29,8 +26,8 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository
         return await _context.PurchaseInvoices
             .Include(p => p.Vendor)
             .Include(p => p.PurchaseInvoiceItems)
-                .ThenInclude(pi => pi.PurchaseItem)
-                    .ThenInclude(item => item.Part)
+                .ThenInclude(pi => pi.PurchaseItem!)
+                    .ThenInclude(item => item.Part!)
             .OrderByDescending(p => p.PurchaseDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -39,7 +36,7 @@ public class PurchaseInvoiceRepository : IPurchaseInvoiceRepository
 
     public async Task AddAsync(PurchaseInvoice invoice)
     {
-        await _context.PurchaseInvoices.AddAsync(invoice);
-        await _context.SaveChangesAsync();
+        Create(invoice);
+        await SaveChangesAsync();
     }
 }

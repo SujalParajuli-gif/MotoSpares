@@ -5,13 +5,10 @@ using MotoSpares.Infrastructure.Data;
 
 namespace MotoSpares.Infrastructure.Repositories;
 
-public class CustomerRepository : ICustomerRepository
+public class CustomerRepository : RepositoryBase<ApplicationUser>, ICustomerRepository
 {
-    private readonly AppDbContext _context;
-
-    public CustomerRepository(AppDbContext context)
+    public CustomerRepository(AppDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<IEnumerable<ApplicationUser>> SearchCustomersAsync(string query)

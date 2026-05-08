@@ -5,18 +5,10 @@ using MotoSpares.Infrastructure.Data;
 
 namespace MotoSpares.Infrastructure.Repositories;
 
-public class VendorRepository : IVendorRepository
+public class VendorRepository : RepositoryBase<Vendor>, IVendorRepository
 {
-    private readonly AppDbContext _context;
-
-    public VendorRepository(AppDbContext context)
+    public VendorRepository(AppDbContext context) : base(context)
     {
-        _context = context;
-    }
-
-    public async Task<Vendor?> GetByIdAsync(int id)
-    {
-        return await _context.Vendors.FindAsync(id);
     }
 
     public async Task<IEnumerable<Vendor>> GetAllAsync()
@@ -26,14 +18,14 @@ public class VendorRepository : IVendorRepository
 
     public async Task AddAsync(Vendor vendor)
     {
-        await _context.Vendors.AddAsync(vendor);
-        await _context.SaveChangesAsync();
+        Create(vendor);
+        await SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Vendor vendor)
     {
-        _context.Vendors.Update(vendor);
-        await _context.SaveChangesAsync();
+        Update(vendor);
+        await SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
@@ -41,8 +33,8 @@ public class VendorRepository : IVendorRepository
         var vendor = await _context.Vendors.FindAsync(id);
         if (vendor != null)
         {
-            _context.Vendors.Remove(vendor);
-            await _context.SaveChangesAsync();
+            Delete(vendor);
+            await SaveChangesAsync();
         }
     }
 }

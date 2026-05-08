@@ -5,18 +5,10 @@ using MotoSpares.Infrastructure.Data;
 
 namespace MotoSpares.Infrastructure.Repositories;
 
-public class PartRepository : IPartRepository
+public class PartRepository : RepositoryBase<Part>, IPartRepository
 {
-    private readonly AppDbContext _context;
-
-    public PartRepository(AppDbContext context)
+    public PartRepository(AppDbContext context) : base(context)
     {
-        _context = context;
-    }
-
-    public async Task<Part?> GetByIdAsync(int id)
-    {
-        return await _context.Parts.FirstOrDefaultAsync(p => p.PartId == id && p.IsActive);
     }
 
     public async Task<IEnumerable<Part>> GetAllAsync(int page, int pageSize)
@@ -53,14 +45,14 @@ public class PartRepository : IPartRepository
 
     public async Task AddAsync(Part part)
     {
-        await _context.Parts.AddAsync(part);
-        await _context.SaveChangesAsync();
+        Create(part);
+        await SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Part part)
     {
-        _context.Parts.Update(part);
-        await _context.SaveChangesAsync();
+        Update(part);
+        await SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
@@ -69,8 +61,8 @@ public class PartRepository : IPartRepository
         if (part != null)
         {
             part.IsActive = false; // Soft delete
-            _context.Parts.Update(part);
-            await _context.SaveChangesAsync();
+            Update(part);
+            await SaveChangesAsync();
         }
     }
 }
