@@ -10,6 +10,7 @@ import SignupPage from './pages/auth/SignupPage';
 // Role dashboards
 import AdminDashboard from './pages/admin/AdminDashboard';
 import StaffDashboard from './pages/staff/StaffDashboard';
+import RegisterCustomer from './pages/staff/RegisterCustomer';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 
 // Misc pages
@@ -58,6 +59,14 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['Staff']}>
                 <StaffDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/register-customer"
+            element={
+              <ProtectedRoute allowedRoles={['Staff']}>
+                <RegisterCustomer />
               </ProtectedRoute>
             }
           />
