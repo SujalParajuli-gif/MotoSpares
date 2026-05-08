@@ -11,6 +11,7 @@ import SignupPage from './pages/auth/SignupPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageStaff from './pages/admin/ManageStaff';
 import StaffDashboard from './pages/staff/StaffDashboard';
+import RegisterCustomer from './pages/staff/RegisterCustomer';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import ManageVehicles from './pages/customer/ManageVehicles';
 
@@ -68,6 +69,14 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['Staff']}>
                 <StaffDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/staff/register-customer"
+            element={
+              <ProtectedRoute allowedRoles={['Staff']}>
+                <RegisterCustomer />
               </ProtectedRoute>
             }
           />
