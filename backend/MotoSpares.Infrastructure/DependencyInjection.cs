@@ -4,6 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MotoSpares.Domain.Entities;
 using MotoSpares.Infrastructure.Data;
+using MotoSpares.Application.Interfaces;
+using MotoSpares.Application.Interfaces.Repositories;
+using MotoSpares.Application.Services;
+using MotoSpares.Infrastructure.Repositories;
 
 namespace MotoSpares.Infrastructure;
 
@@ -28,6 +32,19 @@ public static class DependencyInjection
         })
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
+
+        // Register Repositories
+        services.AddScoped<IVendorRepository, VendorRepository>();
+        services.AddScoped<IPartRepository, PartRepository>();
+        services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+        // Register Services
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IVendorService, VendorService>();
+        services.AddScoped<IPartService, PartService>();
+        services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
+        services.AddScoped<ICustomerService, CustomerService>();
 
         return services;
     }

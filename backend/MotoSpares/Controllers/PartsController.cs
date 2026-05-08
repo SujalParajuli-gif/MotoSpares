@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MotoSpares.Common.Responses;
-using MotoSpares.DTOs.Part;
-using MotoSpares.Interfaces.Services;
+using MotoSpares.Application.DTOs;
+using MotoSpares.Application.DTOs.Part;
+using MotoSpares.Application.Interfaces;
 
 namespace MotoSpares.Controllers
 {
-    public class PartsController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PartsController : ControllerBase
     {
         private readonly IPartService _partService;
 
@@ -50,10 +52,10 @@ namespace MotoSpares.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ApiResponse<PartResponseDto>>> Update(PartUpdateDto dto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ApiResponse<PartResponseDto>>> Update(int id, PartUpdateDto dto)
         {
-            var result = await _partService.UpdateAsync(dto);
+            var result = await _partService.UpdateAsync(id, dto);
             if (!result.IsSuccess)
                 return BadRequest(result);
             return Ok(result);
