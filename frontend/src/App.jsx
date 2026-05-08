@@ -10,6 +10,7 @@ import SignupPage from './pages/auth/SignupPage';
 // Role dashboards
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageStaff from './pages/admin/ManageStaff';
+import ManageVendors from './pages/admin/ManageVendors';
 import StaffDashboard from './pages/staff/StaffDashboard';
 import RegisterCustomer from './pages/staff/RegisterCustomer';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
@@ -59,6 +60,14 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['Admin']}>
                 <ManageStaff />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/vendors"
+            element={
+              <ProtectedRoute allowedRoles={['Admin']}>
+                <ManageVendors />
               </ProtectedRoute>
             }
           />
