@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MotoSpares.Application.DTOs.Customer;
 using MotoSpares.Application.Interfaces;
 
 namespace MotoSpares.Controllers;
@@ -51,5 +52,12 @@ public class CustomerController : ControllerBase
             return NotFound(new { isSuccess = false, message = "Customer not found." });
 
         return Ok(new { isSuccess = true, data = vehicles });
+    }
+
+    [HttpPost("register-with-vehicle")]
+    public async Task<IActionResult> RegisterWithVehicle([FromBody] RegisterCustomerWithVehicleDto dto)
+    {
+        var result = await _customerService.RegisterCustomerWithVehicleAsync(dto);
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 }
