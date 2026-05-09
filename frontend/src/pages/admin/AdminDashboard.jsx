@@ -10,7 +10,7 @@ export default function AdminDashboard() {
     { title: 'Inventory', desc: 'View and manage spare parts stock', color: 'from-amber-500 to-orange-600' },
     { title: 'Purchase Orders', desc: 'Track vendor purchase invoices', color: 'from-blue-500 to-indigo-600' },
     { title: 'Sales Reports', desc: 'View sale analytics and revenue', color: 'from-purple-500 to-violet-600' },
-    { title: 'Vendors', desc: 'Manage supplier relationships', color: 'from-rose-500 to-pink-600' },
+    { title: 'Vendors', desc: 'Manage supplier relationships', color: 'from-rose-500 to-pink-600', path: '/admin/vendors' },
     { title: 'Appointments', desc: 'View all service appointments', color: 'from-cyan-500 to-teal-600' },
   ];
 
