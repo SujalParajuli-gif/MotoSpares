@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MotoSpares.Application.Interfaces;
 
-namespace MotoSpares.Infrastructure.Services
+namespace MotoSpares.Infrastructure.Services;
+
+public class PdfService : IPdfService
 {
-    internal class PdfService
-    {
-    }
 }

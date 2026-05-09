@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MotoSpares.Application.Interfaces
 {
-    internal class IPdfService
+    public interface IPdfService
     {
     }
 }

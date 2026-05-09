@@ -11,6 +11,30 @@ public class CustomerRepository : RepositoryBase<ApplicationUser>, ICustomerRepo
     {
     }
 
+    public async Task<List<ApplicationUser>> GetAllCustomersAsync()
+    {
+        return await _context.Users
+            .Where(u => u.Role == "Customer")
+            .Include(u => u.UserVehicles)
+            .Include(u => u.UserSaleInvoices)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<ApplicationUser?> GetCustomerByIdAsync(Guid userId)
+    {
+        return await _context.Users
+            .Where(u => u.Id == userId && u.Role == "Customer")
+            .Include(u => u.UserVehicles)
+                .ThenInclude(uv => uv.Vehicle)
+            .Include(u => u.UserSaleInvoices)
+                .ThenInclude(usi => usi.SaleInvoice!)
+                    .ThenInclude(si => si.SaleInvoiceItems)
+                        .ThenInclude(sii => sii.SaleItem!)
+                            .ThenInclude(item => item.Part)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<IEnumerable<ApplicationUser>> SearchCustomersAsync(string query)
     {
         var lowerQuery = query.ToLower();

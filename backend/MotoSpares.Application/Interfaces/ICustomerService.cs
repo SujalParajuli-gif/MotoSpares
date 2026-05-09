@@ -5,5 +5,13 @@ namespace MotoSpares.Application.Interfaces;
 
 public interface ICustomerService
 {
+    Task<List<CustomerListDto>> GetAllCustomersAsync();
+
+    Task<CustomerDetailsDto?> GetCustomerDetailsAsync(Guid userId);
+
+    Task<CustomerHistoryDto?> GetCustomerHistoryAsync(Guid userId);
+
+    Task<CustomerVehiclesDto?> GetCustomerVehiclesAsync(Guid userId);
+
     Task<ApiResponse<IEnumerable<CustomerSearchResponseDto>>> SearchCustomersAsync(string query);
 }

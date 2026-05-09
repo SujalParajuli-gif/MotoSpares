@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using MotoSpares.Domain.Entities;
-using MotoSpares.Infrastructure.Data;
+using MotoSpares.Application.DTOs.Common;
 using MotoSpares.Application.Interfaces;
 using MotoSpares.Application.Interfaces.Repositories;
 using MotoSpares.Application.Services;
+using MotoSpares.Domain.Entities;
+using MotoSpares.Infrastructure.Data;
 using MotoSpares.Infrastructure.Repositories;
+using MotoSpares.Infrastructure.Services;
 
 namespace MotoSpares.Infrastructure;
 
@@ -42,54 +43,35 @@ public static class DependencyInjection
         .AddDefaultTokenProviders()
         .AddSignInManager();
 
+        // =========================
         // Repositories
+        // =========================
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IFinanceRepository, FinanceRepository>();
-
-        // Services
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<IVendorService, VendorService>();
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IFinanceService, FinanceService>();
-
-        // =========================
-        // Repositories
-        // =========================
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IPartRepository, PartRepository>();
+        services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
 
         // =========================
-        // Services
+        // Application Services
         // =========================
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IVendorService, VendorService>();
-        services.AddScoped<IAuthService, AuthService>();
-
-        // 🔥 Invoice Service
+        services.AddScoped<IFinanceService, FinanceService>();
         services.AddScoped<IInvoiceService, InvoiceService>();
+        services.AddScoped<IPartService, PartService>();
+        services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
 
         // =========================
-        // Email Configuration
+        // Email / PDF Services
         // =========================
         services.Configure<EmailSettings>(
             configuration.GetSection("EmailSettings"));
 
         services.AddScoped<IEmailService, EmailService>();
-
-        // Register Repositories
-        services.AddScoped<IVendorRepository, VendorRepository>();
-        services.AddScoped<IPartRepository, PartRepository>();
-        services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-
-        // Register Services
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IVendorService, VendorService>();
-        services.AddScoped<IPartService, PartService>();
-        services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
-        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IPdfService, PdfService>();
 
         return services;
     }
