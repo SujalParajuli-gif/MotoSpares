@@ -52,12 +52,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IVehicleService, VehicleService>();
-builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
-builder.Services.AddScoped<IVendorRepository, VendorRepository>();
-builder.Services.AddScoped<IVendorService, VendorService>();
-
 var app = builder.Build();
 
 // Seed data

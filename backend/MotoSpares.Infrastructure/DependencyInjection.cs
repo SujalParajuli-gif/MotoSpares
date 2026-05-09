@@ -52,6 +52,7 @@ public static class DependencyInjection
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
         services.AddScoped<IPartRepository, PartRepository>();
         services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
+        services.AddScoped<IVehicleRepository, VehicleRepository>();
 
         // =========================
         // Application Services
@@ -64,6 +65,7 @@ public static class DependencyInjection
         services.AddScoped<IPartService, PartService>();
         services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
         services.AddScoped<IStaffService, StaffService>();
+        services.AddScoped<IVehicleService, VehicleService>();
 
         // =========================
         // Email / PDF Services
