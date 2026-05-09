@@ -2,9 +2,11 @@ using MotoSpares.Domain.Entities;
 
 namespace MotoSpares.Application.Interfaces.Repositories;
 
-public interface IVendorRepository
+/// <summary>
+/// Vendor-specific repository extending the generic base.
+/// </summary>
+public interface IVendorRepository : IRepositoryBase<Vendor>
 {
-    Task<Vendor?> GetByIdAsync(int id);
     Task<IEnumerable<Vendor>> GetAllAsync();
     Task AddAsync(Vendor vendor);
     Task UpdateAsync(Vendor vendor);

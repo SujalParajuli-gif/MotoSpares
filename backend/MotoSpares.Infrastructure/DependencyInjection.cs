@@ -10,17 +10,6 @@ using MotoSpares.Application.Interfaces.Repositories;
 using MotoSpares.Application.Services;
 using MotoSpares.Infrastructure.Repositories;
 
-
-using MotoSpares.Application.Interfaces;
-using MotoSpares.Application.Interfaces.Repositories;
-using MotoSpares.Application.Services;
-
-using MotoSpares.Infrastructure.Repositories;
-using MotoSpares.Infrastructure.Services;
-
-// 🔥 Email settings
-using MotoSpares.Application.DTOs.Common;
-
 namespace MotoSpares.Infrastructure;
 
 public static class DependencyInjection
@@ -88,6 +77,19 @@ public static class DependencyInjection
             configuration.GetSection("EmailSettings"));
 
         services.AddScoped<IEmailService, EmailService>();
+
+        // Register Repositories
+        services.AddScoped<IVendorRepository, VendorRepository>();
+        services.AddScoped<IPartRepository, PartRepository>();
+        services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+        // Register Services
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IVendorService, VendorService>();
+        services.AddScoped<IPartService, PartService>();
+        services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
+        services.AddScoped<ICustomerService, CustomerService>();
 
         return services;
     }

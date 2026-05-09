@@ -5,40 +5,26 @@ using MotoSpares.Infrastructure.Data;
 
 namespace MotoSpares.Infrastructure.Repositories;
 
-public class CustomerRepository : ICustomerRepository
+public class CustomerRepository : RepositoryBase<ApplicationUser>, ICustomerRepository
 {
-    private readonly AppDbContext _context;
-
-    public CustomerRepository(AppDbContext context)
+    public CustomerRepository(AppDbContext context) : base(context)
     {
-        _context = context;
     }
 
-    public async Task<List<ApplicationUser>> GetAllCustomersAsync()
+    public async Task<IEnumerable<ApplicationUser>> SearchCustomersAsync(string query)
     {
-        return await _context.Users
-            .AsNoTracking()
-            .AsSplitQuery()
-            .Where(u => u.Role == "Customer")
-            .Include(u => u.UserVehicles)
-            .Include(u => u.UserSaleInvoices)
-            .OrderBy(u => u.FullName)
-            .ToListAsync();
-    }
+        var lowerQuery = query.ToLower();
 
-    public async Task<ApplicationUser?> GetCustomerByIdAsync(Guid userId)
-    {
+        // Need to check Name, Phone, ID, or Vehicle Number
         return await _context.Users
-            .AsNoTracking()
-            .AsSplitQuery()
-            .Where(u => u.Id == userId && u.Role == "Customer")
             .Include(u => u.UserVehicles)
                 .ThenInclude(uv => uv.Vehicle)
-            .Include(u => u.UserSaleInvoices)
-                .ThenInclude(usi => usi.SaleInvoice!)
-                    .ThenInclude(si => si.SaleInvoiceItems)
-                        .ThenInclude(sii => sii.SaleItem!)
-                            .ThenInclude(item => item.Part)
-            .FirstOrDefaultAsync();
+            .Where(u => u.Role == "Customer" && (
+                u.FullName.ToLower().Contains(lowerQuery) ||
+                (u.PhoneNumber != null && u.PhoneNumber.Contains(lowerQuery)) ||
+                u.Id.ToString().ToLower() == lowerQuery ||
+                u.UserVehicles.Any(uv => uv.Vehicle != null && uv.Vehicle.VehicleNumber.ToLower().Contains(lowerQuery))
+            ))
+            .ToListAsync();
     }
 }

@@ -29,6 +29,8 @@ public class Part
     [Range(0, int.MaxValue)]
     public int ReorderLevel { get; set; }
 
+    public bool IsActive { get; set; } = true;
+
     public ICollection<PurchaseItem> PurchaseItems { get; set; } = new List<PurchaseItem>();
     public ICollection<SaleItem> SaleItems { get; set; } = new List<SaleItem>();
     public ICollection<UserPart> UserParts { get; set; } = new List<UserPart>();
