@@ -13,6 +13,7 @@ import ManageStaff from './pages/admin/ManageStaff';
 import StaffDashboard from './pages/staff/StaffDashboard';
 import RegisterCustomer from './pages/staff/RegisterCustomer';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
+import ManageVehicles from './pages/customer/ManageVehicles';
 
 // Misc pages
 import UnauthorizedPage from './pages/UnauthorizedPage';
@@ -86,6 +87,14 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['Customer']}>
                 <CustomerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/vehicles"
+            element={
+              <ProtectedRoute allowedRoles={['Customer']}>
+                <ManageVehicles />
               </ProtectedRoute>
             }
           />
