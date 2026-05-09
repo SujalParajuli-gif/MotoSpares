@@ -50,11 +50,7 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowCredentials();
     });
-
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IStaffService, StaffService>();
-builder.Services.AddScoped<IVendorRepository, VendorRepository>();
-builder.Services.AddScoped<IVendorService, VendorService>();
+});
 
 var app = builder.Build();
 
@@ -74,10 +70,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.UseCors("AllowAll");
-
-app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
