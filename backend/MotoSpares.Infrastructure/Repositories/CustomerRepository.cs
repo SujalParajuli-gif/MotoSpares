@@ -35,12 +35,10 @@ public class CustomerRepository : ICustomerRepository
             .Include(u => u.UserVehicles)
                 .ThenInclude(uv => uv.Vehicle)
             .Include(u => u.UserSaleInvoices)
-                .ThenInclude(usi => usi.SaleInvoice)
-                    .ThenInclude(si => si!.SaleInvoiceItems)
-                        .ThenInclude(sii => sii.SaleItem)
-                            .ThenInclude(si => si!.Part)
-            .Include(u => u.UserAppointments)
-                .ThenInclude(ua => ua.Appointment)
+                .ThenInclude(usi => usi.SaleInvoice!)
+                    .ThenInclude(si => si.SaleInvoiceItems)
+                        .ThenInclude(sii => sii.SaleItem!)
+                            .ThenInclude(item => item.Part)
             .FirstOrDefaultAsync();
     }
 }

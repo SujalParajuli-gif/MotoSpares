@@ -1,20 +1,17 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MotoSpares.Application.Interfaces;
-using MotoSpares.Application.Interfaces.Repositories;
-using MotoSpares.Application.Services;
 using MotoSpares.Infrastructure;
 using MotoSpares.Infrastructure.Data;
-using MotoSpares.Infrastructure.Repositories;
 using MotoSpares.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// Swagger
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -43,8 +40,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// 🔥 Infrastructure (ONLY ONCE)
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
 
@@ -67,6 +66,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
@@ -78,20 +78,16 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IVendorRepository, VendorRepository>();
-builder.Services.AddScoped<IVendorService, VendorService>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-
 var app = builder.Build();
 
+// Seed data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await DbSeeder.SeedRolesAndAdminAsync(services);
 }
 
+// Middleware
 app.UseMiddleware<GlobalExceptionHandler>();
 
 if (app.Environment.IsDevelopment())
