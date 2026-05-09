@@ -51,11 +51,10 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 
-    options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
-});
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStaffService, StaffService>();
+builder.Services.AddScoped<IVendorRepository, VendorRepository>();
+builder.Services.AddScoped<IVendorService, VendorService>();
 
 var app = builder.Build();
 
