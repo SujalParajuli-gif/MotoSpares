@@ -4,15 +4,48 @@ using System.Text;
 using MotoSpares.Infrastructure;
 using MotoSpares.Infrastructure.Data;
 using MotoSpares.Middleware;
-using Scalar.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "MotoSpares API",
+        Version = "v1",
+        Description = "MotoSpares Auto Parts Management System API"
+    });
 
-builder.Services.AddOpenApi();
+    // JWT Bearer auth in Swagger UI
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter your JWT token"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 // Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -66,8 +99,12 @@ app.UseMiddleware<GlobalExceptionHandler>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MotoSpares API v1");
+        options.RoutePrefix = string.Empty; // Swagger at root URL
+    });
 }
 
 app.UseCors("AllowReactApp");
