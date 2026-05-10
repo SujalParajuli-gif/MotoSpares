@@ -19,15 +19,12 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // =========================
+
         // DbContext
-        // =========================
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-        // =========================
         // Identity
-        // =========================
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
         {
             options.Password.RequireDigit = true;
@@ -43,9 +40,7 @@ public static class DependencyInjection
         .AddDefaultTokenProviders()
         .AddSignInManager();
 
-        // =========================
         // Repositories
-        // =========================
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IVendorRepository, VendorRepository>();
         services.AddScoped<IFinanceRepository, FinanceRepository>();

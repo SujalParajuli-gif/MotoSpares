@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddOpenApi();
 
-// 🔥 Infrastructure (ONLY ONCE)
+// Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // JWT

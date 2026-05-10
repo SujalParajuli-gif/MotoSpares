@@ -94,7 +94,7 @@ backend/
 **Development Tools**
 - Visual Studio
 - Git and GitHub
-- Postman
+- SwaggerUI
 
 ## Design Approach
 
@@ -115,10 +115,10 @@ The project is supported by documentation and development evidence, including:
 ## Team Members
 
 - **Sujal Parajuli**
-- **Md**
-- **Swodhin**
-- **Nischal**
-- **Niran**
+- **Md Injamamul Haque**
+- **Swodhin Prajapati**
+- **Nischal Tharu Lohabaria**
+- **Niran Bhatta**
 
 ## Academic Context
 
@@ -133,3 +133,4 @@ This project was developed for the **CS6004NI Application Development** module a
 ## License
 
 This repository is submitted for academic purposes.
+
